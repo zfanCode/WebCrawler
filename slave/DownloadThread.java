@@ -8,11 +8,22 @@ import java.io.*;
  
 import javax.net.ssl.HttpsURLConnection;
  
-public class Downloader {
+public class DownloadThread extends Thread{
 	private static final String USER_AGENT = "Mozilla/5.0";
         private static final String parentURL = "http://www.zhihu.com/question/";
+        private int num;
+
+        public DownloadThread(int num){
+            this.num = num;
+        }
+
+        @Override
+        public void run(){
+            downloadByGet(num);
+        }
+
 	// HTTP GET request
-	public static void downloadByGet(int id){
+	private static void downloadByGet(int id){
                 PrintWriter out = null;
 
                 try {
