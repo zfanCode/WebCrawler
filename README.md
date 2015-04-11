@@ -18,8 +18,10 @@ The program consists of two parts:
 
 #### Threads
 - ExtractedIdAcceptingService
+
 >One thread for receiving ids from the slaves and putting the ids into a queue.
 - PopulatingService
+
 >Another thread is for populating the ids to each slaves so that they have urls to download and their workload can be balanced.
 
 #### Class
