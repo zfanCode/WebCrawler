@@ -1,11 +1,17 @@
 import java.util.*;
+import java.util.regex.*;
 import java.io.*;
 
 public class HTMLParser {
-    private String html;
+    private static final String REGEX = "question/\\d+";
+    private static final Pattern p = Pattern.compile(REGEX);
 
-    public HTMLParser(String fileName){
-        html = "";
+    public static TreeSet<Integer> getQuestionsIDs(int id){
+        String fileName = id + ".html";
+
+        String html = "";
+
+        //get text
         Scanner in = null;
         try {
             in = new Scanner(new File(fileName));
@@ -19,51 +25,23 @@ public class HTMLParser {
             }
             in.close();
         }
-    }
 
-    public static void main (String[] args) {
-        HTMLParser parser = new HTMLParser("index.html");
-        //parser.print();
-        parser.getQuestionsIDs();
-    }
-    
-    public int[] getQuestionsIDs(){
+
+ 
+        //extract numbers
         TreeSet<Integer> idSet = new TreeSet<Integer>();
-        int foundIndex;
-        int startIndex;
-        int endIndex = 0;
-        Pattern p = Pattern.compile("href=\"/question/");
-        String endMark = "";
 
-        while((endIndex)!=-1){
-             startIndex = html.indexOf(target, endIndex);
-             endIndex = html.indexOf(endMark, startIndex);
+        String matchedMsg = "";
+        int number;
+        Matcher m = p.matcher(html);
 
-             if (startIndex != -1 && endIndex != -1) {
-                String number =  html.substring(startIndex+target.length(), endIndex);
-                System.out.println(number);
-             
-             }
+        while (m.find()){
+            matchedMsg = m.group(0);
+            number = Integer.parseInt(matchedMsg.substring("question/".length(),matchedMsg.length()));
+            idSet.add(number);
+        } 
 
-        }
-
-
-        return null;
-        
-    
-    }
-
-
-
-
-    public void print(){
-        System.out.println(html);
-    
-    }
-
-    @Override
-    public String toString(){
-        return html;
+        return idSet;
     }
 
 }
