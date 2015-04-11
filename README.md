@@ -12,7 +12,7 @@ The program consists of two parts:
 ####Variable
 - UniverseSet: Set<Integer>
 
-       > An integer set that contains all urls (or question ids) of added questions on Zhihu.com.
+> An integer set that contains all urls (or question ids) of added questions on Zhihu.com.
 
 -  populatingQueue: Queue<Integer>
 
@@ -20,6 +20,7 @@ The program consists of two parts:
 - ExtractedIdAcceptingService
 
 >One thread for receiving ids from the slaves and putting the ids into a queue.
+
 - PopulatingService
 
 >Another thread is for populating the ids to each slaves so that they have urls to download and their workload can be balanced.
