@@ -16,7 +16,7 @@ public class Downloader {
                 PrintWriter out = null;
 
                 try {
-                    out =  new PrintWriter(new File("./"+id+".html"));
+                    out =  new PrintWriter(new File("./download/"+id+".html"));
  
 		    String url = parentURL+id;
  

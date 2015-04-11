@@ -7,7 +7,7 @@ public class HTMLParser {
     private static final Pattern p = Pattern.compile(REGEX);
 
     public static TreeSet<Integer> getQuestionsIDs(int id){
-        String fileName = id + ".html";
+        String fileName = "./download/"+id + ".html";
 
         String html = "";
 
