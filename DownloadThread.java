@@ -8,7 +8,7 @@ import java.io.*;
  
 import javax.net.ssl.HttpsURLConnection;
  
-public class DownloadThread implements Runnable{
+public class DownloadThread implements Runnable,Protocol{
 	private static final String USER_AGENT = "Mozilla/5.0";
         private static final String parentURL = "http://www.zhihu.com/question/";
         private DataOutputStream toMaster;
@@ -69,6 +69,9 @@ public class DownloadThread implements Runnable{
                 
                 TreeSet<Integer> idset = HTMLParser.getQuestionsIDs(num);
                 try {
+                    toMaster.writeInt(ID_REQUEST);
+                    toMaster.writeInt(idset.size());
+                    toMaster.flush();
                     
                     for (int x :idset ) {
                         toMaster.writeInt(x);

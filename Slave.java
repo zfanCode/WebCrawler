@@ -6,7 +6,6 @@ public class Slave implements Runnable, Protocol {
     private ExecutorService pool;
     private DataInputStream fromMaster;
     private DataOutputStream toMaster;
-    private static final int MAX_THREADS = 10;
 
     public Slave(Socket socket){
         pool = Executors.newFixedThreadPool(MAX_THREADS);
