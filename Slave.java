@@ -6,6 +6,7 @@ public class Slave implements Runnable, Protocol {
     private ExecutorService pool;
     private DataInputStream fromMaster;
     private DataOutputStream toMaster;
+    private static final int MAX_THREADS = 10;
 
     public Slave(Socket socket){
         pool = Executors.newFixedThreadPool(MAX_THREADS);
@@ -18,7 +19,7 @@ public class Slave implements Runnable, Protocol {
 
     public static void main (String[] args) {
         try {
-            Socket  socket = new Socket("localhost", PORT);
+            Socket  socket = new Socket("192.168.0.18", PORT);
             new Thread(new Slave(socket)).start();
         } catch(Exception e) {
         }

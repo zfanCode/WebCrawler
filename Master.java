@@ -8,25 +8,29 @@ public class Master implements Protocol{
         TreeSet<Integer> universe = new TreeSet<Integer>();
         LinkedList<Integer> readyToDownload = new LinkedList<Integer>();
         Socket socket = null;
+        ServerSocket serversocket = null;
         try{
-            ServerSocket serversocket = new ServerSocket(PORT);
-            socket = serversocket.accept();
+            serversocket = new ServerSocket(PORT);
         }catch(IOException e){
             System.out.println(e);
         }
 
-        try {
-            DataOutputStream toSlave = new DataOutputStream(socket.getOutputStream());
-            for (int i=0; i<MAX_THREADS;i++ ) {
-                toSlave.writeInt(SEED);
+        while(true){
+            try {
+                socket = serversocket.accept();
+                DataOutputStream toSlave = new DataOutputStream(socket.getOutputStream());
+                for (int i=0; i<MAX_THREADS;i++ ) {
+                    toSlave.writeInt(SEED);
+                }
+                toSlave.flush();
+                new Thread(new ExtractedIdAcceptService(universe,readyToDownload, socket)).start();
+                System.out.println("Connected");
+
+            } catch(IOException e) {
+                System.out.println("Disconnected");
+
             }
-            toSlave.flush();
-        } catch(Exception e) {
         }
-
-        new Thread(new ExtractedIdAcceptService(universe,readyToDownload, socket)).start();
-
-        System.out.println("Connected");
     }
 
 }
