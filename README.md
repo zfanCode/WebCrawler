@@ -1,3 +1,9 @@
+## Ideas
+- Create a backup mechanism that can stop and restart the crawling
+- Create a program that merges files to one computer
+- A better way of illustrating statistics on the Master program
+
+***
 ## Zhihu Web Crawler
 
 This project is to crawl all questions on www.zhihu.com as a practice of Networking in Java.
