@@ -1,37 +1,45 @@
+import java.io.*;
+import java.util.concurrent.*;
 import java.util.*;
-import java.awt.event.*;
+import java.net.*;
+public class Slave implements Runnable, Protocol {
+    private ExecutorService pool;
+    private DataInputStream fromMaster;
+    private DataOutputStream toMaster;
+    private static final int MAX_THREADS = 10;
 
-public class Slave {
-    public static void main (String[] args) {
-        //DownloadService service = new DownloadService();
-        //Thread t = new Thread(service);
-        //service.start();
-
-        TreeSet<Integer> idset = new TreeSet<Integer>();
-        idset.add(22266015);
-        idset.add(19566985);
-        idset.add(21826476);
-        idset.add(19561631);
-        idset.add(19566980);
-        idset.add(19566985);
-        idset.add(19801697);
-        idset.add(19810462);
-        idset.add(19902415);
-        idset.add(20014415);
-        idset.add(20120168);
-        idset.add(20187542);
-        idset.add(20200749);
-        idset.add(20261859);
-        idset.add(20376438);
-        idset.add(20727479);
-
-
-        while(!idset.isEmpty()){
-            Thread t = new DownloadThread(idset.pollFirst());
-            t.start();
+    public Slave(Socket socket){
+        pool = Executors.newFixedThreadPool(MAX_THREADS);
+        try {
+            fromMaster = new DataInputStream(socket.getInputStream());
+            toMaster = new DataOutputStream(socket.getOutputStream());
+        } catch(IOException e) {
         }
-        System.err.println("Done");
-        
     }
 
+    public static void main (String[] args) {
+        try {
+            Socket  socket = new Socket("localhost", PORT);
+            new Thread(new Slave(socket)).start();
+        } catch(Exception e) {
+        }
+    }
+
+
+    @Override
+    public void run(){
+        int next;
+        try {
+            while(true){
+                try {
+                    next = fromMaster.readInt();
+                    System.out.println("Id accepted: " + next);
+                    pool.execute(new DownloadThread(next,toMaster));
+                } catch(InputMismatchException e) {
+                    System.out.println("Wrong input");
+                }
+            }
+        } catch(IOException e) {
+        }
+    }
 }

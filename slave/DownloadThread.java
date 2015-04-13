@@ -8,28 +8,30 @@ import java.io.*;
  
 import javax.net.ssl.HttpsURLConnection;
  
-public class DownloadThread extends Thread{
+public class DownloadThread implements Runnable{
 	private static final String USER_AGENT = "Mozilla/5.0";
         private static final String parentURL = "http://www.zhihu.com/question/";
+        private DataOutputStream toMaster;
         private int num;
 
-        public DownloadThread(int num){
+        public DownloadThread(int num, DataOutputStream toMaster){
+            this.toMaster = toMaster;
             this.num = num;
         }
 
         @Override
         public void run(){
-            downloadByGet(num);
+            downloadByGet();
         }
 
 	// HTTP GET request
-	private static void downloadByGet(int id){
+	private void downloadByGet(){
                 PrintWriter out = null;
 
                 try {
-                    out =  new PrintWriter(new File("./download/"+id+".html"));
+                    out =  new PrintWriter(new File("./download/"+num+".html"));
  
-		    String url = parentURL+id;
+		    String url = parentURL+num;
  
 		    URL obj = new URL(url);
 		    HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -62,6 +64,17 @@ public class DownloadThread extends Thread{
                     System.err.println(e.getMessage());
                 }finally{
                     out.close();
+                }
+
+                
+                TreeSet<Integer> idset = HTMLParser.getQuestionsIDs(num);
+                try {
+                    
+                    for (int x :idset ) {
+                        toMaster.writeInt(x);
+                    }
+                    toMaster.flush();
+                } catch(IOException e) {
                 }
  
 	}
