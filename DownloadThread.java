@@ -26,10 +26,11 @@ public class DownloadThread implements Runnable,Protocol{
 
 	// HTTP GET request
 	private void downloadByGet(){
-                PrintWriter out = null;
+        PrintWriter out = null;
 
-                try {
-                    out =  new PrintWriter(new File("./download/"+num+".html"));
+        try {
+            out =  new PrintWriter(new File("./download/"+num+".html"));
+
  
 		    String url = parentURL+num;
  
@@ -41,15 +42,13 @@ public class DownloadThread implements Runnable,Protocol{
  
 		    //add request header
 		    con.setRequestProperty("User-Agent", USER_AGENT);
- 
 		    int responseCode = con.getResponseCode();
 		    System.out.println("\nSending 'GET' request to URL : " + url);
- 
 		    BufferedReader in = new BufferedReader(
 		            new InputStreamReader(con.getInputStream()));
 		    String inputLine;
 		    StringBuffer response = new StringBuffer();
- 
+
 		    while ((inputLine = in.readLine()) != null) {
 		    	response.append(inputLine);
 		    }
@@ -58,13 +57,14 @@ public class DownloadThread implements Runnable,Protocol{
 		    //print result
 		    out.print(response.toString());
 
-                }catch(FileNotFoundException e) {
-                    System.err.println("File not found");
-                }catch(IOException e) {
-                    System.err.println(e.getMessage());
-                }finally{
-                    out.close();
-                }
+
+        }catch(FileNotFoundException e) {
+            System.err.println("File not found");
+        }catch(IOException e) {
+            System.err.println(e.getMessage());
+        }finally{
+            out.close();
+        }
 
                 
                 TreeSet<Integer> idset = HTMLParser.getQuestionsIDs(num);

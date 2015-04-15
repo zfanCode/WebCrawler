@@ -19,7 +19,7 @@ public class Slave implements Runnable, Protocol {
 
     public static void main (String[] args) {
         try {
-            Socket  socket = new Socket("192.168.0.18", PORT);
+            Socket  socket = new Socket(IP, PORT);
             new Thread(new Slave(socket)).start();
         } catch(Exception e) {
         }
