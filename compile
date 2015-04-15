@@ -1,0 +1,9 @@
+#!/bin/sh
+
+clear
+clear
+echo "remove class files"
+rm *.class
+echo "compiling"
+javac *.java
+
