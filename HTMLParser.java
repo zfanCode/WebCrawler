@@ -29,6 +29,8 @@ public class HTMLParser
                 else 
                 {
                     matchPages(html);
+                    report("****** the linke is " + link);
+                    linkSet = addPages(link, linkSet);
                     linkSet = extractQuestion(html, linkSet);
                 }
             }
@@ -37,7 +39,6 @@ public class HTMLParser
                 matchPages(html);
                 linkSet = extractQuestion(html, linkSet);
             }
-            linkSet = addPages(link, linkSet);
             out.print(log);
             out.close();
         }
